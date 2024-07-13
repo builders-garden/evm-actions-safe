@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import SafeApiKit from '@safe-global/api-kit'
 import { getEip712TxTypes } from "@safe-global/protocol-kit";
+import { getEip712Domain } from "viem/actions";
 
 export const POST = async (req: NextRequest) => {
   try {
@@ -26,7 +27,7 @@ export const POST = async (req: NextRequest) => {
 
     // Define the domain
     const domain = {
-      name: 'Safe Shortcut',
+      name: 'SafeTx',
       version: '1',
       chainId: chain,
       verifyingContract: signedTransaction.safe
@@ -58,7 +59,7 @@ export const POST = async (req: NextRequest) => {
     };
 
     // Return the JSON data
-    return NextResponse.json({ message: typedData});
+    return NextResponse.json({ message: typedData });
 
   } catch (error) {
     console.error(error)
