@@ -10,7 +10,7 @@ export const POST = async (req: NextRequest) => {
 
   const body = await req.json();
   // get the signature and the safe address from the body
-  const { signature, address } = body;
+  const { message, signature, address } = body;
   // check if signature is provided
   if (!signature) {
     return NextResponse.json({ error: "signature is required" }, { status: 400 });
@@ -19,13 +19,16 @@ export const POST = async (req: NextRequest) => {
   const apiKit = new SafeApiKit({
     chainId: BigInt(chain) // Base chain ID
   });
+
+  
   
   const messageProps: AddMessageProps = {
-    message: signature,
-    signature: signature.encodedSignatures()
+    message,
+    signature
   }
   
   // Send the message to the Transaction Service with the signature from Owner A
   apiKit.addMessage(address, messageProps);
+
   return NextResponse.json({ message: "ok" });
 };
