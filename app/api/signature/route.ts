@@ -69,10 +69,8 @@ export const POST = async (req: NextRequest) => {
       message
     };
 
-    // Convert to JSON format for signing
-    const jsonData = JSON.stringify(typedData);
     // Return the JSON data
-    return NextResponse.json(jsonData);
+    return NextResponse.json({ message: typedData});
 
   } catch (error) {
     return NextResponse.json({ error: (error as Error).message }, { status: 500 });
