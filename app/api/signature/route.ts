@@ -61,6 +61,7 @@ export const POST = async (req: NextRequest) => {
     return NextResponse.json({ message: typedData});
 
   } catch (error) {
+    console.error(error)
     return NextResponse.json({ error: (error as Error).message }, { status: 500 });
   }
 };
