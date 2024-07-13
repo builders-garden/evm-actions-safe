@@ -51,7 +51,7 @@ export const POST = async (req: NextRequest) => {
     const message = {
       to: signedTransaction.to,
       value: signedTransaction.value.toString(),
-      data: signedTransaction.data,
+      data: signedTransaction.data || "0x",
       operation: signedTransaction.operation,
       safeTxGas: signedTransaction.safeTxGas.toString(),
       baseGas: signedTransaction.baseGas.toString(),
