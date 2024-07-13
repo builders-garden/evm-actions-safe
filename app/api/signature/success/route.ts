@@ -2,6 +2,7 @@ import SafeApiKit, { AddMessageProps } from '@safe-global/api-kit'
 import { NextRequest, NextResponse } from "next/server";
 
 export const POST = async (req: NextRequest) => {
+try {
   const { searchParams } = new URL(req.url);
   const chain = searchParams.get('chain')
   if (!chain) {
@@ -29,4 +30,8 @@ export const POST = async (req: NextRequest) => {
   await apiKit.addMessage(address, messageProps);
 
   return NextResponse.json({ message: "ok" });
+} catch (error) {
+  console.error(error);
+  return NextResponse.json({ error: "internal server error" }, { status: 500 });
+}
 };
