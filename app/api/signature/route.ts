@@ -44,7 +44,7 @@ export const POST = async (req: NextRequest) => {
       gasPrice: signedTransaction.gasPrice.toString(),
       gasToken: signedTransaction.gasToken,
       refundReceiver: signedTransaction.refundReceiver,
-      nonce: signedTransaction.nonce.toString()
+      nonce: signedTransaction.nonce
     };
 
     // Create the typed data object
