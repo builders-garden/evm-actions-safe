@@ -11,8 +11,8 @@ export const GET = async (req: NextRequest) => {
     image: "https://placehold.co/955x500",
     links: [
       {
-        targetUrl: `${appURL()}/api/signature?txHash=${searchParams.get('txHash')}`,
-        postUrl: `${appURL()}/api/signature/success`, // this will be a POST HTTP call
+        targetUrl: `${appURL()}/api/signature?txHash=${searchParams.get('txHash')}&chain=${searchParams.get('chain')}`,
+        postUrl: `${appURL()}/api/signature/success?chain=${searchParams.get('chain')}`, // this will be a POST HTTP call
         label: "Signature",
         type: ActionLinkType.SIGNATURE,
       },

@@ -3,19 +3,23 @@ import SafeApiKit from '@safe-global/api-kit'
 
 export const POST = async (req: NextRequest) => {
   try {
-    // Initialize the API Kit
-    const apiKit = new SafeApiKit({
-      chainId: BigInt(8453) // Base chain ID
-    });
 
     const { address } = await req.json();
     // get txHash from the url, expected to be in the url using searchParams
     const { searchParams } = new URL(req.url);
     const txHash = searchParams.get('txHash');
+    const chain = searchParams.get('chain')
     // Check if txHash is provided
     if (!txHash) {
       return NextResponse.json({ error: 'txHash is required' }, { status: 400 });
     }
+    if (!chain) {
+      return NextResponse.json({ error: 'chain is required' }, { status: 400 });
+    }
+    // Initialize the API Kit
+    const apiKit = new SafeApiKit({
+      chainId: BigInt(chain) // Base chain ID
+    });
     // Get the signed transaction from Safe API Kit
     const signedTransaction = await apiKit.getTransaction(txHash);
 
@@ -23,7 +27,7 @@ export const POST = async (req: NextRequest) => {
     const domain = {
       name: 'Safe Shortcut',
       version: '1',
-      chainId: 8453, // Base
+      chainId: chain, // Base
       verifyingContract: signedTransaction.safe
     };
 
