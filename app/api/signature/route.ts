@@ -30,6 +30,7 @@ export const POST = async (req: NextRequest) => {
       types: getEip712TxTypes("1.3.0"),
       domain: {
         verifyingContract: signedTransaction.safe,
+        chainId: chain,
       },
       primaryType: 'SafeTx',
       message: {
