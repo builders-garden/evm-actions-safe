@@ -13,7 +13,7 @@ export const GET = async (req: NextRequest) => {
       {
         targetUrl: `${appURL()}/api/signature?txHash=${searchParams.get('txHash')}&chain=${searchParams.get('chain')}`,
         postUrl: `${appURL()}/api/signature/success?chain=${searchParams.get('chain')}&safeAddress=${searchParams.get('safe')}`, // this will be a POST HTTP call
-        label: "Signature",
+        label: "Sign Proposal",
         type: ActionLinkType.SIGNATURE,
       },
     ],
