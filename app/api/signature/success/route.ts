@@ -20,8 +20,6 @@ export const POST = async (req: NextRequest) => {
     chainId: BigInt(chain) // Base chain ID
   });
 
-  
-  
   const messageProps: AddMessageProps = {
     message,
     signature

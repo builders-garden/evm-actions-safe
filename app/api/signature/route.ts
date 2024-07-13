@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import SafeApiKit from '@safe-global/api-kit'
+import { getEip712TxTypes } from "@safe-global/protocol-kit";
 
 export const POST = async (req: NextRequest) => {
   try {
@@ -27,25 +28,12 @@ export const POST = async (req: NextRequest) => {
     const domain = {
       name: 'Safe Shortcut',
       version: '1',
-      chainId: chain, // Base
+      chainId: chain,
       verifyingContract: signedTransaction.safe
     };
 
     // Define the types
-    const types = {
-      SafeTx: [
-        { name: 'to', type: 'address' },
-        { name: 'value', type: 'uint256' },
-        { name: 'data', type: 'bytes' },
-        { name: 'operation', type: 'uint8' },
-        { name: 'safeTxGas', type: 'uint256' },
-        { name: 'baseGas', type: 'uint256' },
-        { name: 'gasPrice', type: 'uint256' },
-        { name: 'gasToken', type: 'address' },
-        { name: 'refundReceiver', type: 'address' },
-        { name: 'nonce', type: 'uint256' },
-      ]
-    };
+    const types = getEip712TxTypes("1.3.0");
 
     // Define the message
     const message = {
