@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import SafeApiKit, { EIP712TypedData } from '@safe-global/api-kit'
 import { getEip712TxTypes } from "@safe-global/protocol-kit";
+import { verify } from "crypto";
+import { EIP712TypedDataTx } from "@safe-global/safe-core-sdk-types";
 
 export const POST = async (req: NextRequest) => {
   try {
@@ -24,36 +26,26 @@ export const POST = async (req: NextRequest) => {
     // Get the signed transaction from Safe API Kit
     const signedTransaction = await apiKit.getTransaction(txHash);
 
-    // Define the domain
-    const domain = {
-      chainId: Number(chain),
-      verifyingContract: signedTransaction.safe
-    };
-
-    // Define the types
-    const types = getEip712TxTypes("1.3.0");
-
-    // Define the message
-    const message = {
-      to: signedTransaction.to,
-      value: signedTransaction.value.toString(),
-      data: signedTransaction.data || "0x",
-      operation: signedTransaction.operation,
-      safeTxGas: signedTransaction.safeTxGas.toString(),
-      baseGas: signedTransaction.baseGas.toString(),
-      gasPrice: signedTransaction.gasPrice.toString(),
-      gasToken: signedTransaction.gasToken,
-      refundReceiver: signedTransaction.refundReceiver,
-      nonce: signedTransaction.nonce
-    };
-
-    // Create the typed data object
-    const typedData = {
-      types,
-      domain,
+    const typedData: EIP712TypedDataTx = {
+      types: getEip712TxTypes("1.3.0"),
+      domain: {
+        verifyingContract: signedTransaction.safe,
+      },
       primaryType: 'SafeTx',
-      message
-    };
+      message: {
+        to: signedTransaction.to,
+        value: signedTransaction.value.toString(),
+        data: signedTransaction.data || "0x",
+        operation: signedTransaction.operation,
+        safeTxGas: signedTransaction.safeTxGas.toString(),
+        baseGas: signedTransaction.baseGas.toString(),
+        gasPrice: signedTransaction.gasPrice.toString(),
+        gasToken: signedTransaction.gasToken,
+        refundReceiver: signedTransaction.refundReceiver || "0x0000000000000000000000000000000000000000",
+        nonce: signedTransaction.nonce
+      }
+      
+    }
 
     // Return the JSON data
     return NextResponse.json({ message: typedData });
