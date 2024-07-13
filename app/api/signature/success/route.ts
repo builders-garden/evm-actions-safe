@@ -28,7 +28,7 @@ export const POST = async (req: NextRequest) => {
   }
   
   // Send the message to the Transaction Service with the signature from Owner A
-  apiKit.addMessage(address, messageProps);
+  await apiKit.addMessage(address, messageProps);
 
   return NextResponse.json({ message: "ok" });
 };
